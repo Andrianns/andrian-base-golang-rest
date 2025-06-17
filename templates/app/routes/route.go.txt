@@ -1,0 +1,23 @@
+package router
+
+import (
+	"{{ .Package }}/app/config"
+	controllers "{{ .Package }}/app/controller"
+	"{{ .Package }}/app/repository"
+	"github.com/gofiber/fiber/v2"
+)
+
+func SetupRoutes(app *fiber.App, cfg *config.AppConfig) {
+	userRepo := repository.NewUserRepository()
+	userController := controllers.NewUserController(userRepo)
+
+	userGroup := app.Group("/users")
+	userGroup.Get("/", userController.GetUsers)
+	userGroup.Get("/:id", userController.GetUser)
+
+
+	documentController := controllers.NewDocumentController(cfg.Clients.GoogleDrive)
+
+	app.Post("/doc", documentController.UploadCV)
+	app.Post("/get-getdoc", documentController.GetCV)
+}
