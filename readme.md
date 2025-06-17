@@ -1,0 +1,1 @@
+./andrian-be-golang-base-rest --pkg=nama-package
